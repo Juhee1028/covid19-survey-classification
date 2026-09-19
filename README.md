@@ -4,7 +4,7 @@
 
 This project develops and compares supervised machine-learning models for classifying a binary COVID-19 survey outcome. It demonstrates an end-to-end workflow covering data quality assessment, privacy-aware feature selection, leakage-safe preprocessing, hyperparameter tuning, and evaluation on a held-out test set.
 
-The dataset contains 5,789 survey records and was supplied by Queensland University of Technology (QUT) for an IFN509 team assessment. This repository is a portfolio-focused reorganisation of that work. It is an educational analysis and is not a clinical diagnostic tool.
+This collaborative project uses a 5,789-record subset of the public Nexoid COVID-19 Survival Calculator dataset. It is an educational data science analysis and is not a clinical diagnostic tool.
 
 ## Project Objectives
 
@@ -16,19 +16,25 @@ The dataset contains 5,789 survey records and was supplied by Queensland Univers
 
 ## Dataset
 
+Nexoid collected anonymous responses through an online COVID-19 risk calculator. The original public dataset contains demographic, geographic, behavioural, health-condition, and precomputed risk variables. The project subset contains 5,789 records and 38 variables.
+
+Source: [Nexoid COVID-19 Survival Calculator dataset](https://www.covid19survivalcalculator.com/en/download)
+
 The target variable is `covid19_positive`:
 
 - Negative records: 3,454
 - Positive records: 2,335
 - Positive class rate: 40.3%
 
-The original course dataset is not redistributed because no public redistribution licence was provided. See [`data/README.md`](data/README.md) for authorised reproduction instructions.
+Nexoid publishes the source dataset under the [Creative Commons Attribution 4.0 International licence](https://creativecommons.org/licenses/by/4.0/). CC BY 4.0 permits reuse, adaptation, and redistribution when Nexoid is credited, the licence is linked, and modifications are identified.
+
+This repository does not include the raw project subset. Although the source is openly licensed and anonymised, the records contain health-related fields and approximate coordinates. Excluding the raw CSV keeps the public repository focused on the method and minimises unnecessary record-level disclosure. See [`data/README.md`](data/README.md) and [`DATA_LICENSE.md`](DATA_LICENSE.md) for provenance, attribution, and reproduction details.
 
 ![Target class distribution](figures/target_distribution.png)
 
 ## Data Preparation
 
-The revised workflow addresses two important modelling risks in the original assessment notebook:
+The revised workflow addresses two important modelling risks identified in the earlier notebook:
 
 1. Preprocessing is fitted only on training folds through a Scikit-learn `Pipeline`, preventing information from the test set from influencing imputation, encoding, or scaling.
 2. Each model is evaluated with its own prediction output, avoiding accidental reuse of predictions from another classifier.
@@ -88,13 +94,15 @@ class_weight = balanced
 |-- src/
 |   `-- train_models.py
 |-- .gitignore
+|-- DATA_LICENSE.md
+|-- NOTEBOOK_STRUCTURE.md
 |-- README.md
 `-- requirements.txt
 ```
 
 ## Reproduce the Analysis
 
-With authorised access to the course dataset:
+With access to the project dataset:
 
 ```bash
 python -m venv .venv
@@ -102,7 +110,7 @@ python -m pip install -r requirements.txt
 python src/train_models.py --data data/Dataset.csv
 ```
 
-The command regenerates all figures and result files used in this README.
+The command regenerates all figures and result files used in this README. The exact 5,789-record subset cannot be reconstructed from the full Nexoid dataset because the subset sampling procedure is not available.
 
 ## Tools
 
@@ -118,12 +126,16 @@ The command regenerates all figures and result files used in this README.
 - The models estimate patterns in this dataset only and must not be used for diagnosis, treatment, or individual health decisions.
 - Performance was measured on one held-out split; external validation was not available.
 
-## Project Context and Contribution
+## Contributors
 
-The original assessment was completed as a team project. My contributions included data cleaning, missing-value handling, exploratory analysis, feature preparation, visualisation, and supporting written analysis. This portfolio version reorganises the workflow, corrects evaluation issues, adds leakage-safe pipelines, and reports reproducible model comparisons.
+This project was developed collaboratively by three contributors. Each contributor should be credited through commits made from an email address connected to their GitHub account. Contributor names and profiles can also be listed here once their GitHub usernames are confirmed.
 
-The original assessment received a High Distinction (22.25/25).
+- [Juhee1028](https://github.com/Juhee1028)
+- Jeong
+- Sarang
 
 ## Licence
 
-The code is available under the MIT License. The licence does not apply to the course dataset, which is not included in this repository.
+The original code and documentation in this repository are available under the MIT License.
+
+The dataset is separate third-party material credited to Nexoid and licensed under CC BY 4.0. The MIT License does not replace or modify the dataset licence. Project planning documents and private collaboration records are not included in this repository.
